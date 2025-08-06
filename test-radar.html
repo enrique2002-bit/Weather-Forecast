@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Weather Radar Test</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        
+        .weather-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .weather-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .weather-card h3 {
+            margin: 0 0 10px 0;
+            color: #fff;
+        }
+        
+        .weather-card p {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .map-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .map-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        #weather-map {
+            height: 500px;
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .status {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌧️ Live Weather Radar</h1>
+        
+        <div class="weather-info">
+            <div class="weather-card">
+                <h3>Location</h3>
+                <p id="city-name">Split, Croatia</p>
+            </div>
+            <div class="weather-card">
+                <h3>Temperature</h3>
+                <p id="temperature">Loading...</p>
+            </div>
+            <div class="weather-card">
+                <h3>Condition</h3>
+                <p id="weather-condition">Loading...</p>
+            </div>
+            <div class="weather-card">
+                <h3>Humidity</h3>
+                <p id="humidity">Loading...</p>
+            </div>
+            <div class="weather-card">
+                <h3>Wind Speed</h3>
+                <p id="wind-speed">Loading...</p>
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <div class="map-title">🌧️ Live Weather Radar</div>
+            <div id="weather-map"></div>
+        </div>
+        
+        <div class="status">
+            <p>🔄 Radar updates every 10 minutes | Weather data updates every 5 minutes</p>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Simple Radar Script -->
+    <script src="simple-radar.js"></script>
+</body>
+</html>

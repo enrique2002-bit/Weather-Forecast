@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Weather Radar - Atmospheric Dashboard</title>
+    <link rel="stylesheet" href="atmospheric-styles.css">
+    <!-- Weather Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css">
+    <!-- Leaflet for Weather Radar -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Atmospheric Background -->
+    <div class="atmospheric-bg">
+        <div class="weather-particles"></div>
+        <div class="cloud-layer cloud-1"></div>
+        <div class="cloud-layer cloud-2"></div>
+        <div class="cloud-layer cloud-3"></div>
+        <div class="atmospheric-gradient"></div>
+        <div class="rain-effect" id="rain-effect"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Floating Header -->
+        <header class="floating-header ultra-glass">
+            <div class="location-info">
+                <div class="location-pin">
+                    <i class="wi wi-direction-up"></i>
+                </div>
+                <div class="location-details">
+                    <h1 class="city-name">Split, Croatia</h1>
+                    <p class="coordinates">43.5081° N • 16.4402° E</p>
+                </div>
+            </div>
+            <div class="time-weather-combo">
+                <div class="current-time" id="current-time">--:--</div>
+                <div class="current-date" id="current-date">Loading...</div>
+                <div class="weather-status" id="weather-status">Clear</div>
+            </div>
+        </header>
+
+        <!-- Hero Weather Display -->
+        <section class="hero-weather ultra-glass">
+            <div class="weather-visual">
+                <div class="temperature-circle">
+                    <div class="temp-display">
+                        <span id="main-temperature" class="main-temp">24</span>
+                        <span class="temp-unit">°</span>
+                    </div>
+                </div>
+                <div class="weather-icon-float">
+                    <i id="main-weather-icon" class="wi wi-day-sunny atmospheric-icon"></i>
+                </div>
+            </div>
+            <div class="weather-info">
+                <h2 class="weather-description" id="weather-description">Clear Atmosphere</h2>
+                <div class="temp-range-atmospheric">
+                    <div class="range-item">
+                        <span class="range-label">High</span>
+                        <span class="range-value" id="high-temp">26°</span>
+                    </div>
+                    <div class="range-divider"></div>
+                    <div class="range-item">
+                        <span class="range-label">Low</span>
+                        <span class="range-value" id="low-temp">18°</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Atmospheric Weather Details -->
+        <section class="atmospheric-details">
+            <div class="detail-card ultra-glass">
+                <div class="detail-icon-wrapper">
+                    <i class="wi wi-thermometer atmospheric-detail-icon"></i>
+                </div>
+                <div class="detail-content">
+                    <span class="detail-label">Feels Like</span>
+                    <span class="detail-value" id="feels-like">26°</span>
+                </div>
+                <div class="detail-glow feels-like-glow"></div>
+            </div>
+
+            <div class="detail-card ultra-glass">
+                <div class="detail-icon-wrapper">
+                    <i class="wi wi-humidity atmospheric-detail-icon"></i>
+                </div>
+                <div class="detail-content">
+                    <span class="detail-label">Humidity</span>
+                    <span class="detail-value" id="humidity">68%</span>
+                </div>
+                <div class="detail-glow humidity-glow"></div>
+            </div>
+
+            <div class="detail-card ultra-glass">
+                <div class="detail-icon-wrapper">
+                    <i class="wi wi-strong-wind atmospheric-detail-icon"></i>
+                </div>
+                <div class="detail-content">
+                    <span class="detail-label">Wind</span>
+                    <span class="detail-value" id="wind-speed">15</span>
+                    <span class="detail-unit">km/h</span>
+                    <span class="detail-sub" id="wind-direction">NW</span>
+                </div>
+                <div class="detail-glow wind-glow"></div>
+            </div>
+
+            <div class="detail-card ultra-glass">
+                <div class="detail-icon-wrapper">
+                    <i class="wi wi-barometer atmospheric-detail-icon"></i>
+                </div>
+                <div class="detail-content">
+                    <span class="detail-label">Pressure</span>
+                    <span class="detail-value" id="pressure">1015</span>
+                    <span class="detail-unit">hPa</span>
+                </div>
+                <div class="detail-glow pressure-glow"></div>
+            </div>
+
+            <div class="detail-card ultra-glass">
+                <div class="detail-icon-wrapper">
+                    <i class="wi wi-fog atmospheric-detail-icon"></i>
+                </div>
+                <div class="detail-content">
+                    <span class="detail-label">Visibility</span>
+                    <span class="detail-value" id="visibility">10</span>
+                    <span class="detail-unit">km</span>
+                </div>
+                <div class="detail-glow visibility-glow"></div>
+            </div>
+
+            <div class="detail-card ultra-glass">
+                <div class="detail-icon-wrapper">
+                    <i class="wi wi-hot atmospheric-detail-icon"></i>
+                </div>
+                <div class="detail-content">
+                    <span class="detail-label">UV Index</span>
+                    <span class="detail-value" id="uv-index">7</span>
+                    <span class="detail-sub" id="uv-description">High</span>
+                </div>
+                <div class="detail-glow uv-glow"></div>
+            </div>
+        </section>
+
+        <!-- Live Weather Radar Section -->
+        <section class="radar-section">
+            <div class="radar-header ultra-glass">
+                <div class="radar-title">
+                    <i class="wi wi-radar radar-icon"></i>
+                    <h2>Live Precipitation Radar</h2>
+                    <span class="location-tag">Split, Croatia</span>
+                </div>
+                <div class="radar-status-indicator">
+                    <div class="live-pulse"></div>
+                    <span class="status-text">LIVE</span>
+                </div>
+            </div>
+            
+            <div class="radar-container ultra-glass">
+                <!-- Weather Radar Display -->
+                <div id="weather-radar" class="weather-radar">
+                    <div class="radar-scope">
+                        <div class="radar-rings">
+                            <div class="radar-ring ring-1"></div>
+                            <div class="radar-ring ring-2"></div>
+                            <div class="radar-ring ring-3"></div>
+                            <div class="radar-ring ring-4"></div>
+                        </div>
+                        <div class="radar-center">
+                            <div class="location-marker">
+                                <i class="wi wi-direction-up"></i>
+                            </div>
+                        </div>
+                        <div class="radar-sweep" id="radar-sweep"></div>
+                        <canvas id="precipitation-canvas" class="precipitation-canvas"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Atmospheric Radar Controls -->
+                <div class="radar-controls">
+                    <button id="play-pause-btn" class="atmospheric-btn">
+                        <i class="wi wi-play"></i>
+                        <span>Play</span>
+                    </button>
+                    <div class="time-slider">
+                        <input type="range" id="time-slider" min="0" max="10" value="10" class="atmospheric-slider">
+                        <div class="slider-labels">
+                            <span>-2h</span>
+                            <span>Now</span>
+                        </div>
+                    </div>
+                    <div class="radar-timestamp">
+                        <i class="wi wi-time-12"></i>
+                        <span id="radar-time">Live: --:--</span>
+                    </div>
+                </div>
+
+                <!-- Precipitation Legend -->
+                <div class="precipitation-legend">
+                    <div class="legend-header">
+                        <i class="wi wi-raindrops"></i>
+                        <span>Precipitation Intensity</span>
+                    </div>
+                    <div class="legend-scale">
+                        <div class="intensity-bar">
+                            <div class="intensity-level level-0" data-intensity="None"></div>
+                            <div class="intensity-level level-1" data-intensity="Light"></div>
+                            <div class="intensity-level level-2" data-intensity="Moderate"></div>
+                            <div class="intensity-level level-3" data-intensity="Heavy"></div>
+                            <div class="intensity-level level-4" data-intensity="Extreme"></div>
+                        </div>
+                        <div class="intensity-labels">
+                            <span>0</span>
+                            <span>Light</span>
+                            <span>Moderate</span>
+                            <span>Heavy</span>
+                            <span>Extreme</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Atmospheric Forecast -->
+        <section class="atmospheric-forecast ultra-glass">
+            <div class="forecast-header">
+                <h3>
+                    <i class="wi wi-time-7"></i>
+                    7-Day Atmospheric Forecast
+                </h3>
+            </div>
+            <div class="forecast-timeline" id="forecast-timeline">
+                <!-- Forecast items will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Weather Insights -->
+        <section class="weather-insights ultra-glass">
+            <div class="insights-header">
+                <i class="wi wi-cloud-refresh"></i>
+                <h3>Atmospheric Insights</h3>
+            </div>
+            <div class="insights-grid">
+                <div class="insight-item">
+                    <i class="wi wi-sunrise"></i>
+                    <div class="insight-content">
+                        <span class="insight-label">Sunrise</span>
+                        <span class="insight-value" id="sunrise">06:12</span>
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <i class="wi wi-sunset"></i>
+                    <div class="insight-content">
+                        <span class="insight-label">Sunset</span>
+                        <span class="insight-value" id="sunset">20:15</span>
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <i class="wi wi-moon-alt-waxing-crescent-3"></i>
+                    <div class="insight-content">
+                        <span class="insight-label">Moon Phase</span>
+                        <span class="insight-value" id="moon-phase">Waxing</span>
+                    </div>
+                </div>
+                <div class="insight-item">
+                    <i class="wi wi-cloud"></i>
+                    <div class="insight-content">
+                        <span class="insight-label">Cloud Cover</span>
+                        <span class="insight-value" id="cloud-cover">15%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Data Source Indicator -->
+    <div class="data-source-float" id="data-source">
+        <div class="source-indicator"></div>
+        <span class="source-text">Loading atmospheric data...</span>
+    </div>
+
+    <script src="atmospheric-radar-app.js"></script>
+</body>
+</html>

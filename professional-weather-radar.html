@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Weather Radar - Split Airport (LDSP)</title>
+    <link rel="stylesheet" href="professional-aviation-styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Professional Header -->
+    <header class="aviation-header">
+        <div class="header-content">
+            <div class="station-info">
+                <div class="station-id">LDSP</div>
+                <div class="station-name">Split Airport Weather Station</div>
+                <div class="coordinates">43°32'N 16°18'E • 24m AMSL</div>
+            </div>
+            <div class="time-display">
+                <div id="utc-time" class="utc-time">--:-- UTC</div>
+                <div id="local-time" class="local-time">--:-- CEST</div>
+                <div id="current-date" class="current-date">-- --- ----</div>
+            </div>
+            <div class="system-status">
+                <div id="data-status" class="data-status">
+                    <div class="status-indicator"></div>
+                    <span>SYSTEM ONLINE</span>
+                </div>
+                <div class="update-time">Last Update: <span id="last-update">--:--</span></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Aviation Dashboard -->
+    <main class="aviation-dashboard">
+        
+        <!-- Current Weather Panel -->
+        <section class="current-weather-panel">
+            <div class="metar-display">
+                <div class="metar-header">METAR LDSP</div>
+                <div id="metar-code" class="metar-code">LDSP ------ ----- ----- ----- A---- RMK</div>
+            </div>
+            
+            <div class="primary-conditions">
+                <div class="temperature-block">
+                    <div class="temp-label">Temperature</div>
+                    <div id="temperature" class="temp-value">--°C</div>
+                    <div class="temp-conversion">(<span id="temp-fahrenheit">--°F</span>)</div>
+                </div>
+                
+                <div class="pressure-block">
+                    <div class="pressure-label">QNH/Altimeter</div>
+                    <div id="pressure-hpa" class="pressure-value">---- hPa</div>
+                    <div id="pressure-inhg" class="pressure-conversion">--.-- inHg</div>
+                </div>
+                
+                <div class="wind-block">
+                    <div class="wind-label">Wind</div>
+                    <div id="wind-display" class="wind-value">---° / -- kt</div>
+                    <div id="wind-gust" class="wind-gust">G -- kt</div>
+                </div>
+                
+                <div class="visibility-block">
+                    <div class="vis-label">Visibility</div>
+                    <div id="visibility" class="vis-value">-- km</div>
+                    <div id="visibility-miles" class="vis-conversion">-- SM</div>
+                </div>
+            </div>
+            
+            <div class="conditions-grid">
+                <div class="condition-item">
+                    <span class="condition-label">Dewpoint:</span>
+                    <span id="dewpoint" class="condition-value">--°C</span>
+                </div>
+                <div class="condition-item">
+                    <span class="condition-label">Humidity:</span>
+                    <span id="humidity" class="condition-value">--%</span>
+                </div>
+                <div class="condition-item">
+                    <span class="condition-label">Cloud Base:</span>
+                    <span id="cloud-base" class="condition-value">---- ft</span>
+                </div>
+                <div class="condition-item">
+                    <span class="condition-label">Precipitation:</span>
+                    <span id="precipitation" class="condition-value">None</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Weather Radar -->
+        <section class="radar-panel">
+            <div class="radar-header">
+                <h2>Weather Radar - 250nm Range</h2>
+                <div class="radar-modes">
+                    <button id="precipitation-mode" class="radar-mode active">Precipitation</button>
+                    <button id="composite-mode" class="radar-mode">Composite</button>
+                    <button id="velocity-mode" class="radar-mode">Velocity</button>
+                </div>
+                <div class="radar-timestamp">
+                    <span id="radar-time">Live Data</span>
+                </div>
+            </div>
+            
+            <div id="weather-map" class="weather-map-container">
+                <!-- Professional weather map will be inserted here -->
+            </div>
+            
+            <div class="radar-controls-panel">
+                <div class="control-group">
+                    <label>Timeline Control:</label>
+                    <div class="timeline-controls">
+                        <button id="play-btn" class="control-btn">▶</button>
+                        <button id="pause-btn" class="control-btn active">⏸</button>
+                        <input type="range" id="time-slider" min="0" max="10" value="10" class="time-slider">
+                        <span id="time-display">Now</span>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label>Radar Range:</label>
+                    <select id="range-selector" class="range-selector">
+                        <option value="50">50 nm</option>
+                        <option value="100">100 nm</option>
+                        <option value="150" selected>150 nm</option>
+                        <option value="250">250 nm</option>
+                    </select>
+                </div>
+                
+                <div class="intensity-scale">
+                    <div class="scale-label">Precipitation Intensity (dBZ)</div>
+                    <div class="scale-bar">
+                        <div class="scale-item" style="background: #00FF00;"><span>5</span></div>
+                        <div class="scale-item" style="background: #32CD32;"><span>15</span></div>
+                        <div class="scale-item" style="background: #FFFF00;"><span>25</span></div>
+                        <div class="scale-item" style="background: #FFA500;"><span>35</span></div>
+                        <div class="scale-item" style="background: #FF4500;"><span>45</span></div>
+                        <div class="scale-item" style="background: #FF0000;"><span>55</span></div>
+                        <div class="scale-item" style="background: #8B0000;"><span>65+</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aviation Forecast -->
+        <section class="forecast-panel">
+            <div class="forecast-header">
+                <h2>Terminal Aerodrome Forecast (TAF)</h2>
+            </div>
+            
+            <div id="taf-display" class="taf-display">
+                <div class="taf-code">TAF LDSP ------ ----- ----- ----- ----- -----</div>
+            </div>
+            
+            <div class="forecast-timeline">
+                <div id="hourly-forecast" class="hourly-forecast">
+                    <!-- Hourly forecast items will be inserted here -->
+                </div>
+            </div>
+            
+            <div class="extended-forecast">
+                <h3>Extended Forecast (7 Days)</h3>
+                <div id="daily-forecast" class="daily-forecast">
+                    <!-- Daily forecast items will be inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Aviation Alerts & NOTAMs -->
+        <section class="alerts-panel">
+            <div class="alerts-header">
+                <h2>Weather Alerts & Aviation NOTAMs</h2>
+            </div>
+            
+            <div id="weather-alerts" class="weather-alerts">
+                <div class="alert-item">
+                    <div class="alert-status">✓ NO ACTIVE WEATHER WARNINGS</div>
+                    <div class="alert-time">All weather conditions within normal parameters</div>
+                </div>
+            </div>
+            
+            <div class="notam-section">
+                <h3>Current NOTAMs</h3>
+                <div id="notam-list" class="notam-list">
+                    <div class="notam-item">
+                        <div class="notam-id">A0123/25</div>
+                        <div class="notam-text">LDSP - Weather radar operational, all systems normal</div>
+                        <div class="notam-valid">Valid: 01 AUG 2025 - 31 AUG 2025</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="professional-aviation-app.js"></script>
+</body>
+</html>

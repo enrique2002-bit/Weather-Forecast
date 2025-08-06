@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Split Weather Forecast - Apple Weather DNA</title>
+    <link rel="stylesheet" href="style-apple.css">
+    <!-- Apple Weather Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/weather-icons@2.0.12/css/weather-icons.min.css">
+    <!-- Apple SF Fonts (Inter as fallback) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=SF+Pro+Display:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Kiosk Mode Optimizations -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#89f7fe">
+    
+    <!-- Prevent context menu and selection for kiosk mode -->
+    <style>
+        body {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Disable scrollbars completely */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Apple Weather DNA Structure -->
+    <div class="backdrop-container">
+        <!-- Living Background Layers -->
+        <div id="gradient-bg" class="gradient-bg"></div>
+        <div class="overlay-grid"></div>
+        <canvas id="particleCanvas" class="particle-canvas"></canvas>
+        
+        <!-- Apple DNA Header -->
+        <header class="apple-header">
+            <div class="status-bar">
+                <div class="location">
+                    <i class="wi wi-direction-up"></i>
+                    <span>Split, Croatia</span>
+                </div>
+                <div class="time-date">
+                    <div id="time" class="time">14:32</div>
+                    <div id="date" class="date">Thursday, August 1</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Apple DNA Hero Section -->
+        <section class="hero-stack">
+            <div class="weather-hero">
+                <i id="heroWeatherIcon" class="wi wi-day-sunny weather-icon-hero"></i>
+                <div class="temp-hero">
+                    <span id="heroTemp" class="temp-main">24</span>
+                    <span class="temp-unit">°</span>
+                </div>
+                <div id="heroCondition" class="condition-text">Clear</div>
+                <div id="heroRange" class="temp-range">
+                    <span class="high">H:26°</span>
+                    <span class="low">L:18°</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Apple DNA Metrics Grid -->
+        <section class="metrics-grid">
+            <!-- Feels Like -->
+            <div class="metric-tile glass-tile">
+                <div class="metric-header">
+                    <i class="wi wi-thermometer"></i>
+                    <span>FEELS LIKE</span>
+                </div>
+                <div class="metric-value">
+                    <span id="feelsLikeValue">26°</span>
+                </div>
+            </div>
+
+            <!-- Humidity -->
+            <div class="metric-tile glass-tile">
+                <div class="metric-header">
+                    <i class="wi wi-humidity"></i>
+                    <span>HUMIDITY</span>
+                </div>
+                <div class="metric-value">
+                    <span id="humidityValue">68%</span>
+                </div>
+            </div>
+
+            <!-- Wind -->
+            <div class="metric-tile glass-tile">
+                <div class="metric-header">
+                    <i class="wi wi-strong-wind"></i>
+                    <span>WIND</span>
+                </div>
+                <div class="metric-value">
+                    <span id="windValue">15 km/h</span>
+                    <div class="metric-detail">
+                        <span id="windDirection">NW</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UV Index -->
+            <div class="metric-tile glass-tile">
+                <div class="metric-header">
+                    <i class="wi wi-day-sunny"></i>
+                    <span>UV INDEX</span>
+                </div>
+                <div class="metric-value">
+                    <span id="uvValue">7</span>
+                    <div class="metric-detail">
+                        <span id="uvDescription">High</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visibility -->
+            <div class="metric-tile glass-tile">
+                <div class="metric-header">
+                    <i class="wi wi-fog"></i>
+                    <span>VISIBILITY</span>
+                </div>
+                <div class="metric-value">
+                    <span id="visibilityValue">10 km</span>
+                </div>
+            </div>
+
+            <!-- Pressure -->
+            <div class="metric-tile glass-tile">
+                <div class="metric-header">
+                    <i class="wi wi-barometer"></i>
+                    <span>PRESSURE</span>
+                </div>
+                <div class="metric-value">
+                    <span id="pressureValue">1015 hPa</span>
+                    <div class="metric-detail">
+                        <span id="pressureDescription">Steady</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Apple DNA Forecast Grid -->
+        <section class="forecast-section">
+            <div class="section-header">
+                <h3>7-DAY FORECAST</h3>
+            </div>
+            <div class="forecast-grid glass-tile">
+                <div id="forecastDays" class="forecast-days">
+                    <!-- Days will be populated by JavaScript -->
+                    <div class="forecast-day">
+                        <div class="day-name">Fri</div>
+                        <i class="wi wi-day-cloudy"></i>
+                        <div class="day-temps">
+                            <div class="high">25°</div>
+                            <div class="low">17°</div>
+                        </div>
+                    </div>
+                    <div class="forecast-day">
+                        <div class="day-name">Sat</div>
+                        <i class="wi wi-day-rain"></i>
+                        <div class="day-temps">
+                            <div class="high">23°</div>
+                            <div class="low">16°</div>
+                        </div>
+                    </div>
+                    <div class="forecast-day">
+                        <div class="day-name">Sun</div>
+                        <i class="wi wi-day-sunny"></i>
+                        <div class="day-temps">
+                            <div class="high">27°</div>
+                            <div class="low">19°</div>
+                        </div>
+                    </div>
+                    <div class="forecast-day">
+                        <div class="day-name">Mon</div>
+                        <i class="wi wi-day-cloudy"></i>
+                        <div class="day-temps">
+                            <div class="high">24°</div>
+                            <div class="low">18°</div>
+                        </div>
+                    </div>
+                    <div class="forecast-day">
+                        <div class="day-name">Tue</div>
+                        <i class="wi wi-day-showers"></i>
+                        <div class="day-temps">
+                            <div class="high">22°</div>
+                            <div class="low">15°</div>
+                        </div>
+                    </div>
+                    <div class="forecast-day">
+                        <div class="day-name">Wed</div>
+                        <i class="wi wi-day-sunny"></i>
+                        <div class="day-temps">
+                            <div class="high">26°</div>
+                            <div class="low">17°</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Weather Data Information Toolboxes -->
+        <section class="weather-details-grid">
+            <div class="section-header">
+                <h3>DETAILED WEATHER INFORMATION</h3>
+            </div>
+            
+            <!-- Current Conditions Toolbox -->
+            <div class="detail-tile glass-tile current-conditions">
+                <div class="detail-header">
+                    <i class="wi wi-thermometer-exterior"></i>
+                    <span>CURRENT CONDITIONS</span>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-row">
+                        <span class="detail-label">Temperature:</span>
+                        <span id="currentTemp" class="detail-value">24°C</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Feels Like:</span>
+                        <span id="currentFeelsLike" class="detail-value">26°C</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Condition:</span>
+                        <span id="currentCondition" class="detail-value">Clear Sky</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Cloud Cover:</span>
+                        <span id="cloudCover" class="detail-value">15%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wind Information Toolbox -->
+            <div class="detail-tile glass-tile wind-info">
+                <div class="detail-header">
+                    <i class="wi wi-windy"></i>
+                    <span>WIND CONDITIONS</span>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-row">
+                        <span class="detail-label">Speed:</span>
+                        <span id="windSpeed" class="detail-value">15 km/h</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Direction:</span>
+                        <span id="windDirectionFull" class="detail-value">Northwest</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Gusts:</span>
+                        <span id="windGusts" class="detail-value">22 km/h</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Degree:</span>
+                        <span id="windDegree" class="detail-value">315°</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atmospheric Conditions Toolbox -->
+            <div class="detail-tile glass-tile atmospheric">
+                <div class="detail-header">
+                    <i class="wi wi-barometer"></i>
+                    <span>ATMOSPHERIC DATA</span>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-row">
+                        <span class="detail-label">Pressure:</span>
+                        <span id="detailPressure" class="detail-value">1015 hPa</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Humidity:</span>
+                        <span id="detailHumidity" class="detail-value">68%</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Dew Point:</span>
+                        <span id="dewPoint" class="detail-value">18°C</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Visibility:</span>
+                        <span id="detailVisibility" class="detail-value">10 km</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sun & Moon Toolbox -->
+            <div class="detail-tile glass-tile sun-moon">
+                <div class="detail-header">
+                    <i class="wi wi-day-sunny"></i>
+                    <span>SUN & MOON</span>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-row">
+                        <span class="detail-label">Sunrise:</span>
+                        <span id="sunrise" class="detail-value">06:12</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Sunset:</span>
+                        <span id="sunset" class="detail-value">20:15</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">UV Index:</span>
+                        <span id="detailUV" class="detail-value">7 - High</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Moon Phase:</span>
+                        <span id="moonPhase" class="detail-value">Waxing Crescent</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Weather Radar Map Section -->
+        <section class="radar-section">
+            <div class="section-header">
+                <h3>LIVE WEATHER RADAR - SPLIT, CROATIA</h3>
+            </div>
+            <div class="radar-container glass-tile">
+                <!-- Live Radar Map Container -->
+                <div id="radarMap" class="radar-map">
+                    <div class="radar-loading">
+                        <div class="loading-spinner"></div>
+                        <span>Loading Live Radar...</span>
+                    </div>
+                </div>
+                
+                <!-- Radar Controls -->
+                <div class="radar-controls">
+                    <button id="playPause" class="radar-btn">
+                        <i class="wi wi-play"></i>
+                        <span>Play</span>
+                    </button>
+                    <button id="currentTime" class="radar-btn active">
+                        <i class="wi wi-time-12"></i>
+                        <span>Now</span>
+                    </button>
+                    <div class="radar-time">
+                        <span id="radarTimestamp">Loading...</span>
+                    </div>
+                </div>
+                
+                <!-- Radar Legend -->
+                <div class="radar-legend">
+                    <div class="legend-item">
+                        <div class="color-box light-rain"></div>
+                        <span>Light Rain</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-box moderate-rain"></div>
+                        <span>Moderate Rain</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-box heavy-rain"></div>
+                        <span>Heavy Rain</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="color-box snow"></div>
+                        <span>Snow</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Satellite Map Zone -->
+        <section class="map-section">
+            <div class="section-header">
+                <h3>SATELLITE VIEW - SPLIT, CROATIA</h3>
+            </div>
+            <div class="map-container glass-tile">
+                <!-- Real Interactive Map -->
+                <iframe 
+                    class="real-map"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47506.52874912473!2d16.413978495117188!3d43.51405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13355dfc6bbbb1a5%3A0xa1798ff631b49f98!2sSplit%2C%20Croatia!5e0!3m2!1sen!2sde!4v1722613200000!5m2!1sen!2sde&maptype=satellite"
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+                
+                <!-- Weather Overlay Information -->
+                <div class="map-overlay">
+                    <div class="map-info">
+                        <div class="map-location">Split, Croatia</div>
+                        <div class="map-coords">43.5081° N, 16.4402° E</div>
+                    </div>
+                    <div class="weather-marker">
+                        <i class="wi wi-day-sunny"></i>
+                        <span id="mapTemp">24°</span>
+                    </div>
+                </div>
+                
+                <!-- Fallback for when map doesn't load -->
+                <div class="map-placeholder" id="mapFallback" style="display: none;">
+                    <i class="wi wi-cloudy map-icon"></i>
+                    <div class="map-location">Split, Croatia</div>
+                    <div class="map-coords">43.5081° N, 16.4402° E</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Load GSAP for Apple-level animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Apple Weather DNA JavaScript with your working API key -->
+    <script src="src/script-multi-api.js"></script>
+    
+    <!-- Service Worker for 24/7 reliability -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(registration => console.log('🔧 Service Worker registered'))
+                .catch(error => console.log('Service Worker registration failed:', error));
+        }
+    </script>
+</body>
+</html>

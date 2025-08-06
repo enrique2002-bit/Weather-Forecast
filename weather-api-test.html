@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .test-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            margin: 20px 0;
+        }
+        #weather-data {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+        }
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .success { background: rgba(34, 197, 94, 0.3); }
+        .error { background: rgba(239, 68, 68, 0.3); }
+        .loading { background: rgba(59, 130, 246, 0.3); }
+    </style>
+</head>
+<body>
+    <h1>🌡️ Weather API Test - Split, Croatia</h1>
+    
+    <div class="test-container">
+        <h2>API Configuration</h2>
+        <p><strong>API Key:</strong> ae9c7b511597467cb5e100338250108</p>
+        <p><strong>Location:</strong> Split, Croatia (43.5081°N, 16.4402°E)</p>
+        <p><strong>Service:</strong> WeatherAPI.com</p>
+        
+        <button onclick="testAPI()">🔍 Test API Connection</button>
+        <button onclick="loadWeatherDashboard()">🌟 Load Full Dashboard</button>
+        
+        <div id="status"></div>
+        <div id="weather-data"></div>
+    </div>
+
+    <script>
+        const API_KEY = 'ae9c7b511597467cb5e100338250108';
+        const LAT = 43.5081;
+        const LON = 16.4402;
+        
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        async function testAPI() {
+            updateStatus('🔄 Testing API connection...', 'loading');
+            
+            try {
+                const url = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LAT},${LON}&days=7&aqi=yes&alerts=yes`;
+                console.log('Testing URL:', url);
+                
+                const response = await fetch(url);
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('Weather data received:', data);
+                
+                updateStatus('✅ API connection successful!', 'success');
+                
+                // Display key weather info
+                const weatherInfo = `
+🌡️ Current Temperature: ${data.current.temp_c}°C
+🌤️ Condition: ${data.current.condition.text}
+💨 Wind: ${data.current.wind_kph} km/h ${data.current.wind_dir}
+💧 Humidity: ${data.current.humidity}%
+👁️ Visibility: ${data.current.vis_km} km
+📊 Pressure: ${data.current.pressure_mb} mb
+☀️ UV Index: ${data.current.uv}
+☁️ Cloud Cover: ${data.current.cloud}%
+🌅 Sunrise: ${data.forecast.forecastday[0].astro.sunrise}
+🌇 Sunset: ${data.forecast.forecastday[0].astro.sunset}
+
+📍 Location: ${data.location.name}, ${data.location.region}, ${data.location.country}
+🕒 Local Time: ${data.location.localtime}
+                `;
+                
+                document.getElementById('weather-data').textContent = weatherInfo;
+                
+            } catch (error) {
+                console.error('API test failed:', error);
+                updateStatus(`❌ API Error: ${error.message}`, 'error');
+                document.getElementById('weather-data').textContent = `Error Details:\n${error.toString()}`;
+            }
+        }
+        
+        function loadWeatherDashboard() {
+            updateStatus('🌟 Loading full weather dashboard...', 'loading');
+            window.open('split-professional-weather.html', '_blank');
+        }
+        
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            setTimeout(testAPI, 1000);
+        });
+    </script>
+</body>
+</html>

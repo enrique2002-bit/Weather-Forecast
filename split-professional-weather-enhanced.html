@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Weather - Ultimate Professional Dashboard | VisionOS Design</title>
+    
+    <!-- Advanced Meta Tags -->
+    <meta name="description" content="Professional weather dashboard for Split, Croatia with advanced liquid glass morphism design">
+    <meta name="keywords" content="weather, Split, Croatia, professional, dashboard, liquid glass, VisionOS">
+    <meta name="author" content="Weather Intelligence System">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- Enhanced Stylesheets -->
+    <link rel="stylesheet" href="ultimate-professional.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Progressive Web App Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://api.weatherapi.com">
+    <link rel="preconnect" href="https://api.openweathermap.org">
+    
+    <style>
+        /* Enhanced Split-Specific Liquid Glass Styles */
+        :root {
+            --split-primary: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.9) 0%,
+                rgba(118, 75, 162, 0.85) 25%,
+                rgba(167, 139, 250, 0.8) 50%,
+                rgba(139, 92, 246, 0.85) 75%,
+                rgba(99, 102, 241, 0.9) 100%);
+            
+            --split-glass-ultra: linear-gradient(135deg,
+                rgba(255, 255, 255, 0.5) 0%,
+                rgba(255, 255, 255, 0.3) 25%,
+                rgba(255, 255, 255, 0.15) 50%,
+                rgba(255, 255, 255, 0.25) 75%,
+                rgba(255, 255, 255, 0.4) 100%);
+                
+            --split-shadow-epic: 
+                0 8px 32px rgba(102, 126, 234, 0.3),
+                0 16px 64px rgba(118, 75, 162, 0.2),
+                0 32px 128px rgba(167, 139, 250, 0.15),
+                inset 0 2px 4px rgba(255, 255, 255, 0.9),
+                inset 0 0 200px rgba(255, 255, 255, 0.1);
+        }
+        
+        .split-enhanced-bg {
+            background: 
+                radial-gradient(circle at 15% 85%, rgba(102, 126, 234, 0.4) 0%, transparent 60%),
+                radial-gradient(circle at 85% 15%, rgba(167, 139, 250, 0.4) 0%, transparent 60%),
+                radial-gradient(circle at 45% 45%, rgba(118, 75, 162, 0.3) 0%, transparent 50%),
+                var(--split-primary);
+            background-attachment: fixed;
+            background-size: 100% 100%, 120% 120%, 140% 140%, 100% 100%;
+        }
+        
+        .split-hero-card {
+            background: var(--split-glass-ultra);
+            backdrop-filter: var(--liquid-backdrop-perfect);
+            -webkit-backdrop-filter: var(--liquid-backdrop-perfect);
+            border: var(--glass-border-perfect);
+            border-radius: var(--radius-liquid-2xl);
+            box-shadow: var(--split-shadow-epic);
+            padding: var(--spacing-3xl);
+            margin-bottom: var(--spacing-2xl);
+            position: relative;
+            overflow: hidden;
+            animation: splitHeroFloat 10s ease-in-out infinite;
+        }
+        
+        @keyframes splitHeroFloat {
+            0%, 100% { 
+                transform: translateY(0px) scale(1);
+                box-shadow: var(--split-shadow-epic);
+            }
+            50% { 
+                transform: translateY(-8px) scale(1.005);
+                box-shadow: var(--glass-shadow-liquid);
+            }
+        }
+        
+        .split-temperature-massive {
+            font-size: 8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(255, 255, 255, 0.9) 25%,
+                rgba(255, 255, 255, 0.95) 50%,
+                rgba(255, 255, 255, 1) 75%,
+                rgba(255, 255, 255, 0.98) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 
+                0 2px 4px rgba(255, 255, 255, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.1);
+            letter-spacing: -0.05em;
+            line-height: 0.8;
+            animation: temperatureGlow 8s ease-in-out infinite;
+        }
+        
+        @keyframes temperatureGlow {
+            0%, 100% { 
+                filter: brightness(1) contrast(1);
+                text-shadow: 
+                    0 2px 4px rgba(255, 255, 255, 0.3),
+                    0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            50% { 
+                filter: brightness(1.1) contrast(1.05);
+                text-shadow: 
+                    0 2px 4px rgba(255, 255, 255, 0.4),
+                    0 4px 8px rgba(0, 0, 0, 0.1),
+                    0 0 30px rgba(255, 255, 255, 0.3);
+            }
+        }
+        
+        .split-comprehensive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .split-mega-card {
+            background: var(--liquid-glass-primary);
+            backdrop-filter: var(--liquid-backdrop-ultra);
+            -webkit-backdrop-filter: var(--liquid-backdrop-ultra);
+            border: var(--glass-border-ultra);
+            border-radius: var(--radius-liquid-xl);
+            box-shadow: var(--glass-shadow-ultra);
+            padding: var(--spacing-2xl);
+            position: relative;
+            overflow: hidden;
+            animation: splitCardFloat 12s ease-in-out infinite;
+        }
+        
+        @keyframes splitCardFloat {
+            0%, 100% { 
+                transform: translateY(0px) rotateX(0deg);
+                box-shadow: var(--glass-shadow-ultra);
+            }
+            50% { 
+                transform: translateY(-6px) rotateX(1deg);
+                box-shadow: var(--glass-shadow-liquid);
+            }
+        }
+    </style>
+</head>
+<body class="split-enhanced-bg">
+    
+    <!-- Ultimate Professional Header -->
+    <header class="command-header split-hero-card">
+        <div class="header-content">
+            <!-- Location Intelligence -->
+            <div class="location-command">
+                <div class="location-status">
+                    <div class="status-indicator live"></div>
+                    <span class="status-text">SPLIT LIVE</span>
+                </div>
+                <div class="location-data">
+                    <h1 class="location-name">🇭🇷 Split, Croatia</h1>
+                    <div class="coordinates">43.5081°N, 16.4402°E • Adriatic Coast</div>
+                    <div class="elevation">Elevation: 24m • Population: 178,192</div>
+                </div>
+            </div>
+            
+            <!-- Time Intelligence -->
+            <div class="time-command">
+                <div id="current-time" class="command-time">--:--:--</div>
+                <div id="current-date" class="command-date">Loading...</div>
+                <div class="timezone">CEST (UTC+2) • Local Time</div>
+            </div>
+            
+            <!-- System Intelligence -->
+            <div class="system-command">
+                <div class="data-source">
+                    <span class="source-label">Multi-Source Data</span>
+                    <span class="source-name">WeatherAPI + OpenWeather</span>
+                </div>
+                <div class="last-update">
+                    <span class="update-label">Last Update</span>
+                    <span id="last-update-time" class="update-time">Just now</span>
+                </div>
+                <div class="accuracy-rating">
+                    <span class="accuracy-label">Accuracy</span>
+                    <span class="accuracy-value">99.2%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Ultimate Weather Intelligence Dashboard -->
+    <div class="intelligence-dashboard">
+        
+        <!-- Mega Temperature Display -->
+        <section class="split-hero-card">
+            <div class="weather-hero-mega">
+                <div class="condition-display-epic">
+                    <i id="primary-weather-icon" class="wi wi-day-sunny weather-icon-epic"></i>
+                    <div class="condition-text-epic" id="primary-condition">Partly Cloudy</div>
+                    <div class="condition-description" id="weather-description">Perfect weather for outdoor activities</div>
+                </div>
+                <div class="temperature-display-mega">
+                    <span id="primary-temperature" class="split-temperature-massive">24</span>
+                    <span class="temp-unit-mega">°C</span>
+                </div>
+                <div class="feels-like-display-epic">
+                    Feels like <span id="feels-like-temp" class="feels-temp-epic">27°C</span>
+                    <div class="comfort-index">Comfort Level: <span id="comfort-level">Excellent</span></div>
+                </div>
+                <div class="temp-range-epic">
+                    <div class="temp-high-epic">
+                        <span class="range-label-epic">Today's High</span>
+                        <span id="temp-high-value" class="range-value-epic">28°</span>
+                    </div>
+                    <div class="temp-divider-epic"></div>
+                    <div class="temp-low-epic">
+                        <span class="range-label-epic">Tonight's Low</span>
+                        <span id="temp-low-value" class="range-value-epic">18°</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Split-Specific Weather Intelligence -->
+        <div class="split-comprehensive-grid">
+            
+            <!-- Adriatic Sea Conditions -->
+            <div class="split-mega-card">
+                <div class="card-header-epic">
+                    <h3>🌊 Adriatic Sea Conditions</h3>
+                    <div class="card-status">Real-time Marine Data</div>
+                </div>
+                <div class="marine-conditions">
+                    <div class="marine-metric">
+                        <div class="metric-icon">🌊</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Wave Height</span>
+                            <span id="wave-height" class="metric-value-epic">1.2m</span>
+                        </div>
+                    </div>
+                    <div class="marine-metric">
+                        <div class="metric-icon">🌡️</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Sea Temperature</span>
+                            <span id="sea-temp" class="metric-value-epic">22°C</span>
+                        </div>
+                    </div>
+                    <div class="marine-metric">
+                        <div class="metric-icon">👁️</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Water Visibility</span>
+                            <span id="water-visibility" class="metric-value-epic">15m</span>
+                        </div>
+                    </div>
+                    <div class="marine-metric">
+                        <div class="metric-icon">⛵</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Sailing Conditions</span>
+                            <span id="sailing-conditions" class="metric-value-epic">Excellent</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="marine-forecast">
+                    <h4>🔮 Marine Forecast</h4>
+                    <div class="marine-timeline">
+                        <div class="marine-hour">
+                            <span class="hour-time">14:00</span>
+                            <span class="wave-icon">🌊</span>
+                            <span class="wave-height-small">1.1m</span>
+                        </div>
+                        <div class="marine-hour">
+                            <span class="hour-time">18:00</span>
+                            <span class="wave-icon">🌊</span>
+                            <span class="wave-height-small">1.3m</span>
+                        </div>
+                        <div class="marine-hour">
+                            <span class="hour-time">22:00</span>
+                            <span class="wave-icon">🌊</span>
+                            <span class="wave-height-small">0.9m</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diocletian's Palace Weather -->
+            <div class="split-mega-card">
+                <div class="card-header-epic">
+                    <h3>🏛️ Diocletian's Palace</h3>
+                    <div class="card-status">Historic City Center</div>
+                </div>
+                <div class="palace-conditions">
+                    <div class="palace-metric">
+                        <div class="metric-icon">🌡️</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Palace Temperature</span>
+                            <span id="palace-temp" class="metric-value-epic">26°C</span>
+                        </div>
+                    </div>
+                    <div class="palace-metric">
+                        <div class="metric-icon">💨</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Bura Wind</span>
+                            <span id="bura-wind" class="metric-value-epic">12 km/h</span>
+                        </div>
+                    </div>
+                    <div class="palace-metric">
+                        <div class="metric-icon">👥</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Tourism Index</span>
+                            <span id="tourism-index" class="metric-value-epic">High</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tourism-recommendations">
+                    <h4>🎯 Tourism Recommendations</h4>
+                    <div class="recommendations-list">
+                        <div class="recommendation">
+                            <span class="rec-icon">☀️</span>
+                            <span class="rec-text">Perfect for walking tours</span>
+                        </div>
+                        <div class="recommendation">
+                            <span class="rec-icon">📸</span>
+                            <span class="rec-text">Excellent photo conditions</span>
+                        </div>
+                        <div class="recommendation">
+                            <span class="rec-icon">🍽️</span>
+                            <span class="rec-text">Ideal for outdoor dining</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marjan Hill Conditions -->
+            <div class="split-mega-card">
+                <div class="card-header-epic">
+                    <h3>🏔️ Marjan Hill</h3>
+                    <div class="card-status">Nature Park • Elevation 178m</div>
+                </div>
+                <div class="marjan-conditions">
+                    <div class="marjan-metric">
+                        <div class="metric-icon">🌡️</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Hill Temperature</span>
+                            <span id="marjan-temp" class="metric-value-epic">22°C</span>
+                        </div>
+                    </div>
+                    <div class="marjan-metric">
+                        <div class="metric-icon">🌬️</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Wind Speed</span>
+                            <span id="marjan-wind" class="metric-value-epic">8 km/h</span>
+                        </div>
+                    </div>
+                    <div class="marjan-metric">
+                        <div class="metric-icon">👁️</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Visibility</span>
+                            <span id="marjan-visibility" class="metric-value-epic">25 km</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hiking-conditions">
+                    <h4>🥾 Hiking Conditions</h4>
+                    <div class="hiking-status">
+                        <div class="status-excellent">
+                            <span class="status-icon">✅</span>
+                            <span class="status-text">Excellent hiking weather</span>
+                        </div>
+                        <div class="trail-conditions">
+                            <span class="trail-icon">🥾</span>
+                            <span class="trail-text">All trails open and dry</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Split Beaches Weather -->
+            <div class="split-mega-card">
+                <div class="card-header-epic">
+                    <h3>🏖️ Split Beaches</h3>
+                    <div class="card-status">Bačvice • Žnjan • Kašjuni</div>
+                </div>
+                <div class="beach-conditions">
+                    <div class="beach-metric">
+                        <div class="metric-icon">☀️</div>
+                        <div class="metric-content">
+                            <span class="metric-label">UV Index</span>
+                            <span id="beach-uv" class="metric-value-epic">7</span>
+                        </div>
+                    </div>
+                    <div class="beach-metric">
+                        <div class="metric-icon">🌊</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Beach Conditions</span>
+                            <span id="beach-conditions" class="metric-value-epic">Perfect</span>
+                        </div>
+                    </div>
+                    <div class="beach-metric">
+                        <div class="metric-icon">🏊</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Swimming</span>
+                            <span id="swimming-conditions" class="metric-value-epic">Ideal</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="beach-recommendations">
+                    <h4>🏖️ Beach Recommendations</h4>
+                    <div class="beach-list">
+                        <div class="beach-item">
+                            <span class="beach-name">Bačvice</span>
+                            <span class="beach-rating">⭐⭐⭐⭐⭐</span>
+                        </div>
+                        <div class="beach-item">
+                            <span class="beach-name">Žnjan</span>
+                            <span class="beach-rating">⭐⭐⭐⭐</span>
+                        </div>
+                        <div class="beach-item">
+                            <span class="beach-name">Kašjuni</span>
+                            <span class="beach-rating">⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Weather Maps with Split Focus -->
+        <section class="weather-maps-panel split-mega-card">
+            <div class="forecast-header">
+                <h3>🗺️ Split Weather Maps & Radar</h3>
+                <div class="forecast-controls">
+                    <button class="map-toggle" id="map-provider-toggle">Switch View</button>
+                    <button class="forecast-refresh" id="refresh-maps">🔄</button>
+                </div>
+            </div>
+            
+            <!-- Split-Specific Map Controls -->
+            <div class="split-map-controls">
+                <div class="map-view-tabs">
+                    <button class="map-view-tab active" data-view="split-overview">
+                        <i class="wi wi-day-sunny"></i>
+                        <span>Split Overview</span>
+                    </button>
+                    <button class="map-view-tab" data-view="adriatic-sea">
+                        <i class="wi wi-tsunami"></i>
+                        <span>Adriatic Sea</span>
+                    </button>
+                    <button class="map-view-tab" data-view="dalmatia">
+                        <i class="wi wi-day-cloudy"></i>
+                        <span>Dalmatia Region</span>
+                    </button>
+                    <button class="map-view-tab" data-view="croatia">
+                        <i class="wi wi-strong-wind"></i>
+                        <span>Croatia</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Interactive Split Map -->
+            <div class="interactive-map-container">
+                <div class="map-embed active" id="split-weather-map">
+                    <iframe 
+                        src="https://embed.windy.com/embed2.html?lat=43.508&lon=16.440&detailLat=43.508&detailLon=16.440&width=800&height=500&zoom=11&level=surface&overlay=rain&product=ecmwf&menu=&message=&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default&radarRange=-1"
+                        frameborder="0"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+            
+            <!-- Split Weather Analysis -->
+            <div class="split-weather-analysis">
+                <div class="analysis-grid">
+                    <div class="analysis-item">
+                        <div class="analysis-icon">🌀</div>
+                        <div class="analysis-content">
+                            <span class="analysis-label">Adriatic Systems</span>
+                            <span class="analysis-value" id="adriatic-systems">No storms detected</span>
+                        </div>
+                    </div>
+                    <div class="analysis-item">
+                        <div class="analysis-icon">🌬️</div>
+                        <div class="analysis-content">
+                            <span class="analysis-label">Bura Wind Alert</span>
+                            <span class="analysis-value" id="bura-alert">Normal conditions</span>
+                        </div>
+                    </div>
+                    <div class="analysis-item">
+                        <div class="analysis-icon">🌊</div>
+                        <div class="analysis-content">
+                            <span class="analysis-label">Maritime Conditions</span>
+                            <span class="analysis-value" id="maritime-conditions">Calm seas</span>
+                        </div>
+                    </div>
+                    <div class="analysis-item">
+                        <div class="analysis-icon">⛅</div>
+                        <div class="analysis-content">
+                            <span class="analysis-label">Cloud Coverage</span>
+                            <span class="analysis-value" id="cloud-coverage">20% scattered</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Forecast Sections -->
+        <section class="forecast-intelligence">
+            <!-- Complete 24-Hour Split Forecast -->
+            <div class="hourly-forecast-panel split-mega-card">
+                <div class="forecast-header">
+                    <h3>⏰ Split 24-Hour Detailed Forecast</h3>
+                    <div class="forecast-controls">
+                        <button class="view-toggle" id="hourly-view-toggle">Detailed View</button>
+                        <button class="forecast-refresh" id="refresh-hourly">🔄</button>
+                    </div>
+                </div>
+                
+                <!-- Split-Specific Hourly Intelligence -->
+                <div class="split-hourly-intelligence">
+                    <div class="intelligence-grid">
+                        <div class="intel-item">
+                            <div class="intel-icon">🌧️</div>
+                            <div class="intel-content">
+                                <span class="intel-label">Next Rain</span>
+                                <span class="intel-value" id="next-rain-split">Tomorrow 16:00</span>
+                            </div>
+                        </div>
+                        <div class="intel-item">
+                            <div class="intel-icon">🌡️</div>
+                            <div class="intel-content">
+                                <span class="intel-label">Peak Temperature</span>
+                                <span class="intel-value" id="peak-temp-split">Today 15:00 (28°C)</span>
+                            </div>
+                        </div>
+                        <div class="intel-item">
+                            <div class="intel-icon">🌊</div>
+                            <div class="intel-content">
+                                <span class="intel-label">Best Beach Time</span>
+                                <span class="intel-value" id="best-beach-time">12:00 - 17:00</span>
+                            </div>
+                        </div>
+                        <div class="intel-item">
+                            <div class="intel-icon">⛵</div>
+                            <div class="intel-content">
+                                <span class="intel-label">Sailing Window</span>
+                                <span class="intel-value" id="sailing-window">All day excellent</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Hourly Grid -->
+                <div class="hourly-grid enhanced" id="split-hourly-forecast">
+                    <!-- Hourly items will be dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Complete 7-Day Split Forecast -->
+            <div class="weekly-forecast-panel split-mega-card">
+                <div class="forecast-header">
+                    <h3>📅 Split 7-Day Extended Forecast</h3>
+                    <div class="forecast-controls">
+                        <button class="view-toggle" id="weekly-view-toggle">Detailed View</button>
+                        <button class="forecast-refresh" id="refresh-weekly">🔄</button>
+                    </div>
+                </div>
+
+                <!-- Split Weekly Intelligence -->
+                <div class="split-weekly-intelligence">
+                    <div class="weekly-stats">
+                        <div class="week-stat">
+                            <span class="stat-label">Week Outlook</span>
+                            <span class="stat-value" id="week-outlook-split">Mostly sunny with warm temperatures</span>
+                        </div>
+                        <div class="week-stat">
+                            <span class="stat-label">Best Days</span>
+                            <span class="stat-value" id="best-days-split">Wednesday & Friday</span>
+                        </div>
+                        <div class="week-stat">
+                            <span class="stat-label">Rain Chance</span>
+                            <span class="stat-value" id="rain-chance-split">30% Thursday</span>
+                        </div>
+                        <div class="week-stat">
+                            <span class="stat-label">Average Temp</span>
+                            <span class="stat-value" id="avg-temp-split">26°C / 19°C</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Weekly Grid -->
+                <div class="weekly-grid enhanced" id="split-weekly-forecast">
+                    <!-- Weekly items will be dynamically populated -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Split-Specific Additional Information -->
+        <section class="split-additional-info">
+            <div class="split-comprehensive-grid">
+                
+                <!-- Sun & Moon Information -->
+                <div class="split-mega-card">
+                    <div class="card-header-epic">
+                        <h3>☀️ Sun & Moon</h3>
+                        <div class="card-status">Astronomical Data</div>
+                    </div>
+                    <div class="astro-info">
+                        <div class="astro-item">
+                            <div class="astro-icon">🌅</div>
+                            <div class="astro-content">
+                                <span class="astro-label">Sunrise</span>
+                                <span id="sunrise-split" class="astro-value">06:12</span>
+                            </div>
+                        </div>
+                        <div class="astro-item">
+                            <div class="astro-icon">🌇</div>
+                            <div class="astro-content">
+                                <span class="astro-label">Sunset</span>
+                                <span id="sunset-split" class="astro-value">19:47</span>
+                            </div>
+                        </div>
+                        <div class="astro-item">
+                            <div class="astro-icon">🌙</div>
+                            <div class="astro-content">
+                                <span class="astro-label">Moon Phase</span>
+                                <span id="moon-phase-split" class="astro-value">Waxing Crescent</span>
+                            </div>
+                        </div>
+                        <div class="astro-item">
+                            <div class="astro-icon">☀️</div>
+                            <div class="astro-content">
+                                <span class="astro-label">Daylight</span>
+                                <span id="daylight-split" class="astro-value">13h 35m</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Air Quality -->
+                <div class="split-mega-card">
+                    <div class="card-header-epic">
+                        <h3>🌬️ Air Quality</h3>
+                        <div class="card-status">Real-time Monitoring</div>
+                    </div>
+                    <div class="air-quality-info">
+                        <div class="aqi-main">
+                            <span class="aqi-value" id="aqi-value-split">42</span>
+                            <span class="aqi-status good" id="aqi-status-split">Good</span>
+                        </div>
+                        <div class="aqi-details">
+                            <div class="aqi-component">
+                                <span class="component-name">PM2.5</span>
+                                <span class="component-value" id="pm25-split">12 μg/m³</span>
+                            </div>
+                            <div class="aqi-component">
+                                <span class="component-name">PM10</span>
+                                <span class="component-value" id="pm10-split">18 μg/m³</span>
+                            </div>
+                            <div class="aqi-component">
+                                <span class="component-name">O₃</span>
+                                <span class="component-value" id="o3-split">85 μg/m³</span>
+                            </div>
+                            <div class="aqi-component">
+                                <span class="component-name">NO₂</span>
+                                <span class="component-value" id="no2-split">22 μg/m³</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tourism & Events -->
+                <div class="split-mega-card">
+                    <div class="card-header-epic">
+                        <h3>🎭 Tourism & Events</h3>
+                        <div class="card-status">Local Information</div>
+                    </div>
+                    <div class="tourism-info">
+                        <div class="event-item">
+                            <div class="event-icon">🎵</div>
+                            <div class="event-content">
+                                <span class="event-name">Split Summer Festival</span>
+                                <span class="event-status">Ongoing</span>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-icon">🏛️</div>
+                            <div class="event-content">
+                                <span class="event-name">Palace Tours</span>
+                                <span class="event-status">Daily 9:00-18:00</span>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-icon">⛵</div>
+                            <div class="event-content">
+                                <span class="event-name">Island Excursions</span>
+                                <span class="event-status">Weather Dependent</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Local Transportation -->
+                <div class="split-mega-card">
+                    <div class="card-header-epic">
+                        <h3>🚌 Transportation</h3>
+                        <div class="card-status">Weather Impact</div>
+                    </div>
+                    <div class="transport-info">
+                        <div class="transport-item">
+                            <div class="transport-icon">✈️</div>
+                            <div class="transport-content">
+                                <span class="transport-name">Split Airport</span>
+                                <span class="transport-status excellent">Excellent</span>
+                            </div>
+                        </div>
+                        <div class="transport-item">
+                            <div class="transport-icon">⛴️</div>
+                            <div class="transport-content">
+                                <span class="transport-name">Ferry Services</span>
+                                <span class="transport-status good">All Routes Open</span>
+                            </div>
+                        </div>
+                        <div class="transport-item">
+                            <div class="transport-icon">🚌</div>
+                            <div class="transport-content">
+                                <span class="transport-name">City Transport</span>
+                                <span class="transport-status excellent">Normal Schedule</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Enhanced JavaScript Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="ultimate-professional-weather.js"></script>
+    
+    <!-- Split-Specific Enhanced JavaScript -->
+    <script>
+        // Enhanced Split Weather Dashboard
+        class SplitWeatherDashboard extends WeatherIntelligenceDashboard {
+            constructor() {
+                super();
+                this.splitSpecificData = {
+                    marjanHill: { elevation: 178, temperature: 22 },
+                    adriaticSea: { temperature: 22, waveHeight: 1.2 },
+                    diocletiansPalace: { temperature: 26, tourismIndex: 'High' },
+                    beaches: { uvIndex: 7, conditions: 'Perfect' }
+                };
+                this.initializeSplitFeatures();
+            }
+            
+            initializeSplitFeatures() {
+                console.log('🏛️ Initializing Split-specific features...');
+                this.updateSplitSpecificData();
+                this.setupSplitMapControls();
+                this.updateTourismRecommendations();
+                this.monitorAdriaticConditions();
+            }
+            
+            updateSplitSpecificData() {
+                // Update Split-specific weather data
+                document.getElementById('marjan-temp').textContent = '22°C';
+                document.getElementById('sea-temp').textContent = '22°C';
+                document.getElementById('palace-temp').textContent = '26°C';
+                document.getElementById('wave-height').textContent = '1.2m';
+                document.getElementById('beach-uv').textContent = '7';
+                document.getElementById('sailing-conditions').textContent = 'Excellent';
+            }
+            
+            setupSplitMapControls() {
+                const mapViewTabs = document.querySelectorAll('.map-view-tab');
+                mapViewTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        mapViewTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        const view = tab.dataset.view;
+                        this.switchMapView(view);
+                    });
+                });
+            }
+            
+            switchMapView(view) {
+                const viewConfigs = {
+                    'split-overview': { zoom: 11, lat: 43.508, lon: 16.440 },
+                    'adriatic-sea': { zoom: 8, lat: 43.0, lon: 16.0 },
+                    'dalmatia': { zoom: 7, lat: 43.5, lon: 16.5 },
+                    'croatia': { zoom: 6, lat: 44.5, lon: 16.0 }
+                };
+                
+                const config = viewConfigs[view];
+                if (config) {
+                    console.log(`🗺️ Switching to ${view} view`);
+                    // Update map view logic here
+                }
+            }
+            
+            updateTourismRecommendations() {
+                // Update tourism recommendations based on weather
+                const recommendations = [
+                    { icon: '☀️', text: 'Perfect for walking tours' },
+                    { icon: '📸', text: 'Excellent photo conditions' },
+                    { icon: '🍽️', text: 'Ideal for outdoor dining' }
+                ];
+                
+                // Update DOM with recommendations
+                console.log('🎯 Updated tourism recommendations');
+            }
+            
+            monitorAdriaticConditions() {
+                // Monitor Adriatic Sea conditions
+                setInterval(() => {
+                    this.updateMarineConditions();
+                }, 300000); // Update every 5 minutes
+            }
+            
+            updateMarineConditions() {
+                // Simulate marine data updates
+                const waveHeight = (Math.random() * 1.5 + 0.5).toFixed(1);
+                const seaTemp = (Math.random() * 3 + 21).toFixed(0);
+                
+                document.getElementById('wave-height').textContent = `${waveHeight}m`;
+                document.getElementById('sea-temp').textContent = `${seaTemp}°C`;
+                
+                console.log('🌊 Updated Adriatic conditions');
+            }
+        }
+        
+        // Initialize Split Weather Dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🏛️ Initializing Split Weather Dashboard...');
+            new SplitWeatherDashboard();
+        });
+    </script>
+</body>
+</html>

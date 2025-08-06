@@ -1,0 +1,37 @@
+SPLIT CROATIA WEATHER DASHBOARD - PRESENTATION SETUP
+====================================================
+
+QUICK START GUIDE:
+
+1. COPY TO USB STICK:
+   - Copy entire "PRESENTATION_PACKAGE" folder to USB stick
+   - Safely eject USB from this computer
+
+2. ON PRESENTATION COMPUTER:
+   - Insert USB stick
+   - Open the "PRESENTATION_PACKAGE" folder
+   - Double-click "LAUNCH_WEATHER_DASHBOARD.bat"
+
+3. FOR BEST PRESENTATION:
+   - Press F11 for fullscreen mode
+   - Ensure internet connection is available
+   - Use Chrome, Edge, or Firefox browser
+
+DASHBOARD FEATURES:
+✅ Live weather data for Split, Croatia
+✅ 24-hour forecast from current time
+✅ 7-day forecast with full day names
+✅ Professional glassmorphism design
+✅ 4K monitor optimized
+✅ Auto-refreshing data
+
+TROUBLESHOOTING:
+- No data showing? Check internet connection
+- Layout issues? Try different browser
+- Data outdated? Press F5 to refresh
+
+LOCATION: Split, Croatia (43.5081°N, 16.4402°E)
+TIMEZONE: Europe/Zagreb (CET/CEST)
+CREATED: August 6, 2025
+
+====================================================

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Weather - Professional Dashboard</title>
+    <link rel="stylesheet" href="clean-glassmorphism.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css">
+</head>
+<body>
+    <!-- Professional Background -->
+    <div class="professional-bg">
+        <div class="gradient-overlay"></div>
+        <div class="weather-particles"></div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div class="dashboard-container">
+        
+        <!-- Header Section -->
+        <header class="glass-header">
+            <div class="location-info">
+                <div class="location-icon">
+                    <i class="wi wi-direction-up"></i>
+                </div>
+                <div class="location-details">
+                    <h1 class="city-name">Split</h1>
+                    <p class="coordinates">43.5081°N, 16.4402°E</p>
+                </div>
+            </div>
+            <div class="time-section">
+                <div id="current-time" class="current-time">--:--</div>
+                <div id="current-date" class="current-date">Loading...</div>
+            </div>
+            <div class="data-status">
+                <div id="api-status" class="api-indicator">
+                    <div class="status-dot"></div>
+                    <span>Live Data</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ORIGINAL WEATHER LAYOUT RESTORED -->
+        <section class="weather-grid">
+            <!-- Left Box: Main Weather Info -->
+            <div class="main-weather-card glass-card">
+                <div class="weather-info">
+                    <div class="weather-icon" id="main-weather-icon">🌤️</div>
+                    <div class="weather-condition" id="weather-condition">Loading...</div>
+                    <div class="temperature" id="main-temperature">--</div>
+                    <div class="feels-like">Feels like <span id="feels-like-value">--°C</span></div>
+                    <div class="weather-details">
+                        <p><strong>High:</strong> <span id="high-temp">--°C</span></p>
+                        <p><strong>Low:</strong> <span id="low-temp">--°C</span></p>
+                        <p><strong>Humidity:</strong> <span id="humidity">--%</span></p>
+                        <p><strong>Wind:</strong> <span id="wind-speed">-- km/h</span> <span id="wind-direction">--</span></p>
+                        <p><strong>Pressure:</strong> <span id="pressure">-- hPa</span></p>
+                        <p><strong>Visibility:</strong> <span id="visibility">-- km</span></p>
+                        <p><strong>UV Index:</strong> <span id="uv-index">--</span> <span id="uv-description">--</span></p>
+                        <p><strong>Cloud Cover:</strong> <span id="cloud-cover">--%</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Box: Weather Map with Complete Toolboxes -->
+            <div class="weather-map-card glass-card">
+                <!-- Primary Map Controls Toolbox -->
+                <div class="map-controls-toolbox">
+                    <div class="map-buttons">
+                        <button class="map-btn active" data-layer="precipitation">
+                            <i class="wi wi-rain"></i>
+                            <span>Rain</span>
+                        </button>
+                        <button class="map-btn" data-layer="clouds">
+                            <i class="wi wi-cloudy"></i>
+                            <span>Clouds</span>
+                        </button>
+                        <button class="map-btn" data-layer="wind">
+                            <i class="wi wi-strong-wind"></i>
+                            <span>Wind</span>
+                        </button>
+                        <button class="map-btn" data-layer="temp">
+                            <i class="wi wi-thermometer"></i>
+                            <span>Temp</span>
+                        </button>
+                        <button class="map-btn" data-layer="pressure">
+                            <i class="wi wi-barometer"></i>
+                            <span>Pressure</span>
+                        </button>
+                    </div>
+                    <div id="map-layer-status" class="map-status">
+                        <div class="status-dot"></div>
+                        <span>Precipitation Layer</span>
+                    </div>
+                </div>
+
+                <!-- Map Settings Toolbox -->
+                <div class="map-settings-toolbox">
+                    <div class="settings-header">
+                        <i class="wi wi-direction-up"></i>
+                        <span>Map Settings</span>
+                    </div>
+                    <div class="settings-controls">
+                        <div class="setting-item">
+                            <label>Zoom Level:</label>
+                            <input type="range" id="zoom-control" min="3" max="18" value="10">
+                        </div>
+                        <div class="setting-item">
+                            <label>Opacity:</label>
+                            <input type="range" id="opacity-control" min="0" max="100" value="80">
+                        </div>
+                        <div class="setting-item">
+                            <label>Animation:</label>
+                            <button class="toggle-btn" id="animation-toggle">ON</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather Alerts Toolbox -->
+                <div class="weather-alerts-toolbox">
+                    <div class="alerts-header">
+                        <i class="wi wi-lightning"></i>
+                        <span>Weather Alerts</span>
+                    </div>
+                    <div id="alerts-content" class="alerts-content">
+                        <div class="alert-item">
+                            <div class="alert-type">Clear</div>
+                            <div class="alert-desc">No active weather alerts</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Navigation Toolbox -->
+                <div class="map-navigation-toolbox">
+                    <div class="nav-buttons">
+                        <button class="nav-btn" id="zoom-in">
+                            <i class="wi wi-direction-up"></i>
+                        </button>
+                        <button class="nav-btn" id="zoom-out">
+                            <i class="wi wi-direction-down"></i>
+                        </button>
+                        <button class="nav-btn" id="recenter">
+                            <i class="wi wi-compass"></i>
+                        </button>
+                        <button class="nav-btn" id="fullscreen">
+                            <i class="wi wi-day-sunny"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Time Control Toolbox -->
+                <div class="time-control-toolbox">
+                    <div class="time-header">
+                        <i class="wi wi-time-3"></i>
+                        <span>Time Control</span>
+                    </div>
+                    <div class="time-controls">
+                        <button class="time-btn" id="play-pause">
+                            <i class="wi wi-play"></i>
+                        </button>
+                        <input type="range" id="time-slider" min="0" max="24" value="0">
+                        <div class="time-display" id="current-time-display">Now</div>
+                    </div>
+                </div>
+                
+                <div id="weather-map" class="weather-map"></div>
+                
+                <!-- Map Legend Toolbox -->
+                <div id="map-legend" class="map-legend">
+                    <div class="legend-header">
+                        <i class="wi wi-rain legend-icon"></i>
+                        <span>Precipitation (mm/h)</span>
+                    </div>
+                    <div id="legend-content" class="legend-content">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #00ff00;"></div>
+                            <span>Light (0.1-2.5)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ffff00;"></div>
+                            <span>Moderate (2.5-10)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff8000;"></div>
+                            <span>Heavy (10-50)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff0000;"></div>
+                            <span>Extreme (50+)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Info Toolbox -->
+                <div class="map-info-toolbox">
+                    <div class="info-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Layer:</span>
+                            <span class="stat-value" id="active-layer">Precipitation</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Updated:</span>
+                            <span class="stat-value" id="last-updated">Just now</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Source:</span>
+                            <span class="stat-value">OpenWeatherMap</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 24-Hour Forecast Toolbox -->
+                <div class="hourly-forecast-toolbox">
+                    <div class="forecast-header">
+                        <i class="wi wi-time-4"></i>
+                        <span>24-Hour Forecast</span>
+                    </div>
+                    <div class="mini-hourly-forecast">
+                        <div class="mini-hour-item">
+                            <span class="mini-time">Now</span>
+                            <i class="wi wi-day-sunny"></i>
+                            <span class="mini-temp">22°</span>
+                        </div>
+                        <div class="mini-hour-item">
+                            <span class="mini-time">2PM</span>
+                            <i class="wi wi-day-cloudy"></i>
+                            <span class="mini-temp">24°</span>
+                        </div>
+                        <div class="mini-hour-item">
+                            <span class="mini-time">4PM</span>
+                            <i class="wi wi-cloudy"></i>
+                            <span class="mini-temp">23°</span>
+                        </div>
+                        <div class="mini-hour-item">
+                            <span class="mini-time">6PM</span>
+                            <i class="wi wi-rain"></i>
+                            <span class="mini-temp">19°</span>
+                        </div>
+                    </div>
+                    <button class="forecast-expand-btn">View Full Forecast</button>
+                </div>
+
+                <!-- 7-Day Forecast Toolbox -->
+                <div class="weekly-forecast-toolbox">
+                    <div class="forecast-header">
+                        <i class="wi wi-time-12"></i>
+                        <span>7-Day Forecast</span>
+                    </div>
+                    <div class="mini-weekly-forecast">
+                        <div class="mini-day-item">
+                            <span class="mini-day">Today</span>
+                            <i class="wi wi-day-sunny"></i>
+                            <span class="mini-temps">24° / 18°</span>
+                        </div>
+                        <div class="mini-day-item">
+                            <span class="mini-day">Thu</span>
+                            <i class="wi wi-day-cloudy"></i>
+                            <span class="mini-temps">22° / 16°</span>
+                        </div>
+                        <div class="mini-day-item">
+                            <span class="mini-day">Fri</span>
+                            <i class="wi wi-rain"></i>
+                            <span class="mini-temps">19° / 14°</span>
+                        </div>
+                        <div class="mini-day-item">
+                            <span class="mini-day">Sat</span>
+                            <i class="wi wi-day-storm-showers"></i>
+                            <span class="mini-temps">21° / 15°</span>
+                        </div>
+                    </div>
+                    <button class="forecast-expand-btn">View Full Week</button>
+                </div>
+
+                <!-- Temperature Details Toolbox -->
+                <div class="temperature-info-toolbox">
+                    <div class="info-header">
+                        <i class="wi wi-thermometer"></i>
+                        <span>Temperature</span>
+                    </div>
+                    <div class="temp-details">
+                        <div class="temp-item">
+                            <span class="temp-label">Current</span>
+                            <span class="temp-value">22°C</span>
+                        </div>
+                        <div class="temp-item">
+                            <span class="temp-label">Feels Like</span>
+                            <span class="temp-value">25°C</span>
+                        </div>
+                        <div class="temp-item">
+                            <span class="temp-label">High</span>
+                            <span class="temp-value">28°C</span>
+                        </div>
+                        <div class="temp-item">
+                            <span class="temp-label">Low</span>
+                            <span class="temp-value">18°C</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wind Information Toolbox -->
+                <div class="wind-info-toolbox">
+                    <div class="info-header">
+                        <i class="wi wi-strong-wind"></i>
+                        <span>Wind</span>
+                    </div>
+                    <div class="wind-details">
+                        <div class="wind-speed">
+                            <span class="wind-value">12 km/h</span>
+                            <span class="wind-label">Speed</span>
+                        </div>
+                        <div class="wind-direction">
+                            <i class="wi wi-wind-direction" style="transform: rotate(45deg);"></i>
+                            <span class="direction-label">NE</span>
+                        </div>
+                        <div class="wind-gusts">
+                            <span class="gust-label">Gusts</span>
+                            <span class="gust-value">18 km/h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Humidity & Pressure Toolbox -->
+                <div class="humidity-pressure-toolbox">
+                    <div class="info-header">
+                        <i class="wi wi-humidity"></i>
+                        <span>Conditions</span>
+                    </div>
+                    <div class="condition-details">
+                        <div class="condition-item">
+                            <i class="wi wi-humidity"></i>
+                            <div class="condition-data">
+                                <span class="condition-value">68%</span>
+                                <span class="condition-label">Humidity</span>
+                            </div>
+                        </div>
+                        <div class="condition-item">
+                            <i class="wi wi-barometer"></i>
+                            <div class="condition-data">
+                                <span class="condition-value">1013 hPa</span>
+                                <span class="condition-label">Pressure</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UV Index & Visibility Toolbox -->
+                <div class="uv-visibility-toolbox">
+                    <div class="info-header">
+                        <i class="wi wi-day-sunny"></i>
+                        <span>UV & Visibility</span>
+                    </div>
+                    <div class="uv-vis-details">
+                        <div class="uv-index">
+                            <div class="uv-meter">
+                                <div class="uv-bar">
+                                    <div class="uv-fill" style="width: 60%;"></div>
+                                </div>
+                                <span class="uv-value">6 - High</span>
+                            </div>
+                            <span class="uv-label">UV Index</span>
+                        </div>
+                        <div class="visibility">
+                            <i class="wi wi-fog"></i>
+                            <div class="vis-data">
+                                <span class="vis-value">10 km</span>
+                                <span class="vis-label">Visibility</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunrise & Sunset Toolbox -->
+                <div class="sun-times-toolbox">
+                    <div class="info-header">
+                        <i class="wi wi-sunrise"></i>
+                        <span>Sun Times</span>
+                    </div>
+                    <div class="sun-details">
+                        <div class="sun-item">
+                            <i class="wi wi-sunrise"></i>
+                            <div class="sun-data">
+                                <span class="sun-time">06:42</span>
+                                <span class="sun-label">Sunrise</span>
+                            </div>
+                        </div>
+                        <div class="sun-progress">
+                            <div class="sun-arc">
+                                <div class="sun-position" style="left: 65%;"></div>
+                            </div>
+                        </div>
+                        <div class="sun-item">
+                            <i class="wi wi-sunset"></i>
+                            <div class="sun-data">
+                                <span class="sun-time">19:28</span>
+                                <span class="sun-label">Sunset</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Air Quality Toolbox -->
+                <div class="air-quality-toolbox">
+                    <div class="info-header">
+                        <i class="wi wi-smog"></i>
+                        <span>Air Quality</span>
+                    </div>
+                    <div class="air-quality-details">
+                        <div class="aqi-main">
+                            <span class="aqi-value">42</span>
+                            <span class="aqi-status good">Good</span>
+                        </div>
+                        <div class="aqi-breakdown">
+                            <div class="pollutant">
+                                <span class="pollutant-name">PM2.5</span>
+                                <span class="pollutant-value">12 µg/m³</span>
+                            </div>
+                            <div class="pollutant">
+                                <span class="pollutant-name">PM10</span>
+                                <span class="pollutant-value">18 µg/m³</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ORIGINAL HOURLY FORECAST -->
+        <section class="hourly-forecast-section glass-card">
+            <h2>24-Hour Forecast</h2>
+            <div id="hourly-forecast" class="hourly-forecast">
+                <!-- Hourly items will be dynamically inserted -->
+            </div>
+        </section>
+
+        <!-- ORIGINAL DAILY FORECAST -->
+        <section class="daily-forecast-section glass-card">
+            <h2>7-Day Forecast</h2>
+            <div id="daily-forecast" class="daily-forecast">
+                <!-- Daily items will be dynamically inserted -->
+            </div>
+        </section>
+
+        <!-- Weather Popup for Detailed Info -->
+        <div id="popup-weather" class="weather-popup glass-card" style="display: none;">
+            <div class="popup-header">
+                <h3>Detailed Weather Information</h3>
+                <button class="popup-close">&times;</button>
+            </div>
+            <div class="popup-content">
+                <!-- Popup content will be dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Additional Weather Info -->
+        <section class="additional-info-grid">
+            <div class="info-card glass-card">
+                <div class="info-header">
+                    <i class="wi wi-sunrise info-icon"></i>
+                    <span>Sunrise</span>
+                </div>
+                <div id="sunrise" class="info-value">--:--</div>
+            </div>
+
+            <div class="info-card glass-card">
+                <div class="info-header">
+                    <i class="wi wi-sunset info-icon"></i>
+                    <span>Sunset</span>
+                </div>
+                <div id="sunset" class="info-value">--:--</div>
+            </div>
+
+            <div class="info-card glass-card">
+                <div class="info-header">
+                    <i class="wi wi-moon-alt-waxing-crescent-4 info-icon"></i>
+                    <span>Moon Phase</span>
+                </div>
+                <div id="moon-phase" class="info-value">--</div>
+            </div>
+
+            <div class="info-card glass-card">
+                <div class="info-header">
+                    <i class="wi wi-thermometer info-icon"></i>
+                    <span>Dewpoint</span>
+                </div>
+                <div id="dewpoint" class="info-value">--°C</div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="professional-split-weather.js"></script>
+</body>
+</html>

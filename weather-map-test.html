@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Map Test</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        #map { height: 500px; width: 100%; border: 1px solid #ccc; }
+        .controls { margin: 20px 0; }
+        button { margin: 5px; padding: 10px; }
+        .active { background: #007cff; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Weather Map Layer Test</h1>
+    
+    <div class="controls">
+        <button id="satellite" class="layer-btn active">Satellite</button>
+        <button id="precipitation" class="layer-btn">Precipitation</button>
+        <button id="temperature" class="layer-btn">Temperature</button>
+        <button id="wind" class="layer-btn">Wind</button>
+        <button id="clouds" class="layer-btn">Clouds</button>
+        <button id="pressure" class="layer-btn">Pressure</button>
+    </div>
+    
+    <div id="map"></div>
+    
+    <div id="status"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([43.5081, 16.4402], 10);
+        
+        // Weather layers
+        const layers = {
+            satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Satellite imagery by Esri'
+            }),
+            precipitation: L.tileLayer('https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=439d4b804bc8187953eb36d2a8c26a02', {
+                attribution: 'Precipitation by OpenWeatherMap',
+                opacity: 0.7
+            }),
+            temperature: L.tileLayer('https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=439d4b804bc8187953eb36d2a8c26a02', {
+                attribution: 'Temperature by OpenWeatherMap',
+                opacity: 0.6
+            }),
+            wind: L.tileLayer('https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=439d4b804bc8187953eb36d2a8c26a02', {
+                attribution: 'Wind by OpenWeatherMap',
+                opacity: 0.6
+            }),
+            clouds: L.tileLayer('https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=439d4b804bc8187953eb36d2a8c26a02', {
+                attribution: 'Clouds by OpenWeatherMap',
+                opacity: 0.5
+            }),
+            pressure: L.tileLayer('https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=439d4b804bc8187953eb36d2a8c26a02', {
+                attribution: 'Pressure by OpenWeatherMap',
+                opacity: 0.6
+            })
+        };
+        
+        // Start with satellite
+        let currentLayer = 'satellite';
+        layers.satellite.addTo(map);
+        
+        // Add click handlers
+        document.querySelectorAll('.layer-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Remove active class
+                document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                // Remove current layer
+                if (layers[currentLayer]) {
+                    map.removeLayer(layers[currentLayer]);
+                }
+                
+                // Add new layer
+                currentLayer = e.target.id;
+                if (layers[currentLayer]) {
+                    layers[currentLayer].addTo(map);
+                    document.getElementById('status').innerHTML = `Current layer: ${currentLayer}`;
+                    console.log('Switched to:', currentLayer);
+                }
+            });
+        });
+        
+        // Add error handling
+        Object.keys(layers).forEach(layerName => {
+            layers[layerName].on('tileerror', (e) => {
+                console.error(`Error loading ${layerName} tile:`, e);
+                document.getElementById('status').innerHTML = `Error loading ${layerName} tiles`;
+            });
+            
+            layers[layerName].on('tileload', (e) => {
+                console.log(`${layerName} tile loaded successfully`);
+            });
+        });
+        
+        document.getElementById('status').innerHTML = 'Current layer: satellite';
+    </script>
+</body>
+</html>

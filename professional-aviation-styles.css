@@ -1,0 +1,688 @@
+/* Professional Aviation Weather Radar CSS */
+/* No Blue Colors - Professional Meteorological Design */
+
+:root {
+    /* Professional Aviation Color Palette */
+    --aviation-dark: #0a0a0a;
+    --aviation-medium: #1a1a1a;
+    --aviation-light: #2a2a2a;
+    --aviation-accent: #3a3a3a;
+    
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #999999;
+    --text-warning: #ffaa00;
+    --text-danger: #ff4444;
+    --text-success: #00ff00;
+    
+    /* Radar Colors - Professional Meteorological */
+    --radar-bg: #000000;
+    --radar-ring: #333333;
+    --radar-cross: #666666;
+    --radar-sweep: #00ff0044;
+    
+    /* Precipitation Colors (dBZ Scale) */
+    --precip-light: #00ff00;
+    --precip-moderate: #32cd32;
+    --precip-heavy: #ffff00;
+    --precip-severe: #ffa500;
+    --precip-extreme: #ff4500;
+    --precip-violent: #ff0000;
+    --precip-extreme-violent: #8b0000;
+    
+    /* System Colors */
+    --system-online: #00ff00;
+    --system-warning: #ffaa00;
+    --system-offline: #ff4444;
+    
+    /* Typography */
+    --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+    --font-sans: 'Inter', 'Arial', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: linear-gradient(135deg, var(--aviation-dark) 0%, var(--aviation-medium) 100%);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Professional Aviation Header */
+.aviation-header {
+    background: var(--aviation-medium);
+    border-bottom: 2px solid var(--aviation-accent);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.header-content {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+.station-info .station-id {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 3px;
+}
+
+.station-info .station-name {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+}
+
+.station-info .coordinates {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+.time-display {
+    text-align: center;
+}
+
+.utc-time {
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.local-time {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+}
+
+.current-date {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+}
+
+.system-status {
+    text-align: right;
+}
+
+.data-status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-weight: 500;
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--system-online);
+    box-shadow: 0 0 10px var(--system-online);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.update-time {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+}
+
+/* Main Aviation Dashboard */
+.aviation-dashboard {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto auto;
+    gap: 2rem;
+    grid-template-areas: 
+        "weather radar"
+        "forecast radar"
+        "alerts radar";
+}
+
+/* Current Weather Panel */
+.current-weather-panel {
+    grid-area: weather;
+    background: var(--aviation-light);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.metar-display {
+    background: var(--aviation-dark);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.metar-header {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.metar-code {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+    word-break: break-all;
+}
+
+.primary-conditions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.temperature-block,
+.pressure-block,
+.wind-block,
+.visibility-block {
+    background: var(--aviation-dark);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 4px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.temp-label,
+.pressure-label,
+.wind-label,
+.vis-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.temp-value,
+.pressure-value,
+.wind-value,
+.vis-value {
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+}
+
+.temp-conversion,
+.pressure-conversion,
+.wind-gust,
+.vis-conversion {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.conditions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.condition-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--aviation-accent);
+}
+
+.condition-label {
+    color: var(--text-muted);
+}
+
+.condition-value {
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Professional Weather Radar */
+.radar-panel {
+    grid-area: radar;
+    background: var(--aviation-light);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.radar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.radar-header h2 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+}
+
+.radar-modes {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.radar-mode {
+    background: var(--aviation-dark);
+    border: 1px solid var(--aviation-accent);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.radar-mode:hover {
+    background: var(--aviation-accent);
+    color: var(--text-primary);
+}
+
+.radar-mode.active {
+    background: var(--aviation-accent);
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+}
+
+.radar-timestamp {
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Weather Map Container */
+.weather-map-container {
+    width: 100%;
+    height: 500px;
+    background: var(--radar-bg);
+    border: 2px solid var(--aviation-accent);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Radar Controls Panel */
+.radar-controls-panel {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--aviation-dark);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 4px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.control-group:last-child {
+    margin-bottom: 0;
+}
+
+.control-group label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    min-width: 120px;
+}
+
+.timeline-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.control-btn {
+    background: var(--aviation-medium);
+    border: 1px solid var(--aviation-accent);
+    color: var(--text-primary);
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: var(--aviation-accent);
+}
+
+.control-btn.active {
+    background: var(--aviation-accent);
+    border-color: var(--text-primary);
+}
+
+.time-slider {
+    background: var(--aviation-medium);
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+    width: 200px;
+}
+
+.time-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    cursor: pointer;
+}
+
+.range-selector {
+    background: var(--aviation-medium);
+    border: 1px solid var(--aviation-accent);
+    color: var(--text-primary);
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+}
+
+.intensity-scale {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.scale-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.scale-bar {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.scale-item {
+    width: 40px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    position: relative;
+}
+
+.scale-item span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--aviation-dark);
+    font-weight: 600;
+}
+
+/* Aviation Forecast */
+.forecast-panel {
+    grid-area: forecast;
+    background: var(--aviation-light);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.forecast-header h2 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.taf-display {
+    background: var(--aviation-dark);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.taf-code {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+    word-break: break-all;
+}
+
+.forecast-timeline {
+    margin-bottom: 2rem;
+}
+
+.hourly-forecast {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+}
+
+.hourly-item {
+    background: var(--aviation-dark);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 4px;
+    padding: 1rem;
+    min-width: 120px;
+    text-align: center;
+}
+
+.extended-forecast h3 {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.daily-forecast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.daily-item {
+    background: var(--aviation-dark);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 4px;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Aviation Alerts & NOTAMs */
+.alerts-panel {
+    grid-area: alerts;
+    background: var(--aviation-light);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.alerts-header h2 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.weather-alerts {
+    margin-bottom: 2rem;
+}
+
+.alert-item {
+    background: var(--aviation-dark);
+    border: 1px solid var(--system-online);
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.alert-status {
+    font-family: var(--font-mono);
+    color: var(--system-online);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.alert-time {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.notam-section h3 {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.notam-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notam-item {
+    background: var(--aviation-dark);
+    border: 1px solid var(--aviation-accent);
+    border-radius: 4px;
+    padding: 1rem;
+}
+
+.notam-id {
+    font-family: var(--font-mono);
+    color: var(--text-warning);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.notam-text {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.notam-valid {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-family: var(--font-mono);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .aviation-dashboard {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "weather"
+            "radar"
+            "forecast"
+            "alerts";
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .aviation-dashboard {
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .primary-conditions {
+        grid-template-columns: 1fr;
+    }
+    
+    .conditions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .radar-modes {
+        flex-wrap: wrap;
+    }
+    
+    .control-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .timeline-controls {
+        flex-wrap: wrap;
+    }
+}
+
+/* Professional Map Styling */
+.leaflet-container {
+    background: var(--radar-bg) !important;
+    font-family: var(--font-mono) !important;
+}
+
+.leaflet-control-attribution {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: var(--text-muted) !important;
+}
+
+.leaflet-popup-content-wrapper {
+    background: var(--aviation-dark) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--aviation-accent) !important;
+}
+
+.leaflet-popup-tip {
+    background: var(--aviation-dark) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--aviation-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--aviation-accent);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}

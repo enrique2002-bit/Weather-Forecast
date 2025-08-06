@@ -1,0 +1,48 @@
+diff --git a/dev/null b/src/index.html
+new file mode 100644
+index 0000000..2995f12
+--- /dev/null
++++ b/src/index.html
+@@ -0,0 +1,42 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>Split Weather Forecast</title>
++    <link rel="stylesheet" href="style.css">
++    <link
++      rel="stylesheet"
++      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
++      integrity="sha256-o9N1jzL8GJ6zBAXGcj5jBjtuW4V5jzhlzDA8lw0z3G0="
++      crossorigin=""
++    />
++    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o9N1jzL8GJ6zBAXGcj5jBjtuW4V5jzhlzDA8lw0z3G0=" crossorigin=""></script>
++</head>
++<body>
++    <div id="app" class="container">
++        <div class="header">
++            <div class="time" id="time">--:--</div>
++            <div class="date" id="date">Loading...</div>
++        </div>
++        <div class="current-weather glass">
++            <div class="location">Split, Croatia</div>
++            <div class="temp" id="current-temp">--°C</div>
++            <div class="temp-range" id="current-range">H: --°C / L: --°C</div>
++            <div class="details" id="current-details">
++                <div>Precipitation: -- %</div>
++                <div>Humidity: -- %</div>
++                <div>Feels like: -- °C</div>
++                <div>Wind: -- m/s</div>
++                <div>Visibility: -- km</div>
++                <div>UV Index: --</div>
++            </div>
++        </div>
++        <div id="map" class="map glass"></div>
++        <div class="forecast glass" id="forecast">
++            <!-- Forecast items inserted here -->
++        </div>
++    </div>
++<script src="script.js"></script>
++</body>
++</html>

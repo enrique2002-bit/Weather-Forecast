@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Croatia Weather Dashboard - Presentation Mode</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 40px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .launcher-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+        }
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 300;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        .launch-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .launch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .info-item {
+            background: rgba(103, 126, 234, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(103, 126, 234, 0.2);
+        }
+        .info-label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .info-value {
+            color: #333;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+        .features {
+            text-align: left;
+            margin: 30px 0;
+        }
+        .features h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 5px 0;
+            color: #666;
+        }
+        .feature-list li:before {
+            content: "✅ ";
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="launcher-container">
+        <div class="logo">🌤️</div>
+        <h1>Split Croatia</h1>
+        <div class="subtitle">Weather Intelligence Dashboard</div>
+        
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Location</div>
+                <div class="info-value">Split, Croatia</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Coordinates</div>
+                <div class="info-value">43.5081°N, 16.4402°E</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Timezone</div>
+                <div class="info-value">Europe/Zagreb</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Status</div>
+                <div class="info-value">Live Data Ready</div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3>Dashboard Features</h3>
+            <ul class="feature-list">
+                <li>Real-time weather conditions</li>
+                <li>24-hour forecast from current time</li>
+                <li>7-day outlook with full day names</li>
+                <li>Professional glassmorphism design</li>
+                <li>4K monitor optimized layout</li>
+                <li>Auto-refreshing live data</li>
+            </ul>
+        </div>
+
+        <a href="Weather-Dashboard-Split-Croatia.html" class="launch-btn" onclick="openFullscreen()">
+            🚀 Launch Dashboard
+        </a>
+        
+        <div style="margin-top: 30px; color: #888; font-size: 0.9rem;">
+            Press F11 in the dashboard for fullscreen presentation mode
+        </div>
+    </div>
+
+    <script>
+        function openFullscreen() {
+            // Small delay to allow the link to work, then request fullscreen
+            setTimeout(() => {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
