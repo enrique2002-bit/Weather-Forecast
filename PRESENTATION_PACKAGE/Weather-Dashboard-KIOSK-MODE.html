@@ -820,6 +820,70 @@
                 grid-template-columns: 1fr;
                 gap: var(--spacing-md);
             }
+        }
+
+        /* 4K Monitor Optimizations (3840x2160) - KIOSK MODE */
+        @media (min-width: 3840px) {
+            body {
+                font-size: 1.8rem; /* Larger base font for 4K clarity */
+                padding: 60px; /* More generous padding on 4K */
+            }
+
+            .mega-temperature {
+                font-size: 12rem; /* Massive temperature display for 4K */
+            }
+
+            .glass-card {
+                padding: 50px; /* Larger padding for 4K cards */
+                margin-bottom: 40px;
+            }
+
+            .toolboxes-grid {
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 40px; /* Bigger gaps on 4K */
+            }
+
+            .map-container {
+                height: 1200px; /* Even bigger map for 4K viewing */
+            }
+
+            .forecast-items {
+                gap: 30px; /* More space between forecast items */
+            }
+
+            .hourly-item, .daily-item {
+                padding: 25px; /* Larger padding for better touch/visibility */
+                min-width: 200px; /* Wider items for 4K */
+            }
+
+            .forecast-header h3 {
+                font-size: 2.2rem; /* Larger headers for 4K */
+            }
+
+            .toolbox-title {
+                font-size: 1.5rem; /* Bigger toolbox titles */
+            }
+
+            .metric-value {
+                font-size: 5rem; /* Larger metric values for 4K */
+            }
+        }
+
+        /* Ultra-wide 4K Optimizations (3840x2160 and similar) - KIOSK MODE */
+        @media (min-width: 3000px) and (min-height: 1800px) {
+            .container {
+                max-width: 3600px; /* Use more screen real estate */
+                margin: 0 auto;
+            }
+
+            .forecast-items {
+                justify-content: space-between; /* Better distribution on ultra-wide */
+            }
+
+            .upper-toolbox {
+                padding: 60px; /* Extra padding for ultra-wide */
+            }
+        }
 
             .map-header {
                 flex-direction: column;
