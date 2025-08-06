@@ -14,12 +14,31 @@
 4. Navigate to the folder on USB stick
 
 ### Launching the Dashboard:
-**Option 1 (Recommended):**
+**Option 1 (Easy Launcher):**
 - Double-click `LAUNCH_WEATHER_DASHBOARD.bat`
+- Choose from 5 presentation modes:
+  1. Normal Dashboard (Browser Window)
+  2. Professional Launcher Page
+  3. 🖥️ **KIOSK MODE - Chrome** (Fullscreen, No Browser UI)
+  4. 🌐 **KIOSK MODE - Edge** (Fullscreen, No Browser UI)
+  5. Exit
 
-**Option 2 (Alternative):**
-- Double-click `Weather-Dashboard-Split-Croatia.html`
-- It will open in your default web browser
+**Option 2 (Direct Kiosk):**
+- `LAUNCH_KIOSK_MODE.bat` - Chrome Kiosk
+- `LAUNCH_EDGE_KIOSK.bat` - Edge Kiosk
+
+**Option 3 (Manual):**
+- `Weather-Dashboard-Split-Croatia.html` - Normal version
+- `Weather-Dashboard-KIOSK-MODE.html` - Kiosk optimized version
+
+### 🖥️ KIOSK MODE Features:
+- **TRUE FULLSCREEN:** No browser UI visible (address bar, tabs, etc.)
+- **NO DISTRACTIONS:** Only your weather dashboard visible
+- **SECURITY:** Disabled right-click, F12, developer tools
+- **AUTO-CURSOR:** Cursor hides after 5 seconds of inactivity
+- **ZOOM PROTECTION:** Prevents accidental zoom changes
+- **AUTO-REFRESH:** Weather data updates every 5 minutes
+- **EXIT:** Press ALT+F4 to exit kiosk mode
 
 ### Browser Recommendations:
 - **Best:** Chrome, Edge, Firefox (latest versions)

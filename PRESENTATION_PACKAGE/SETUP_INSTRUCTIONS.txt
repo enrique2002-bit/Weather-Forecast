@@ -11,11 +11,26 @@ QUICK START GUIDE:
    - Insert USB stick
    - Open the "PRESENTATION_PACKAGE" folder
    - Double-click "LAUNCH_WEATHER_DASHBOARD.bat"
+   - Choose presentation mode:
+     [1] Normal Dashboard
+     [2] Professional Launcher  
+     [3] KIOSK MODE - Chrome (RECOMMENDED FOR PRESENTATIONS)
+     [4] KIOSK MODE - Edge
+     [5] Exit
 
-3. FOR BEST PRESENTATION:
-   - Press F11 for fullscreen mode
+3. FOR PROFESSIONAL PRESENTATIONS:
+   - Choose option 3 or 4 for KIOSK MODE
+   - True fullscreen with NO browser UI visible
+   - Press ALT+F4 to exit kiosk mode
    - Ensure internet connection is available
-   - Use Chrome, Edge, or Firefox browser
+
+KIOSK MODE FEATURES:
+✅ TRUE FULLSCREEN (no browser UI)
+✅ NO DISTRACTIONS (only weather dashboard)
+✅ SECURITY (disabled right-click, F12, etc.)
+✅ AUTO-CURSOR HIDE (professional look)
+✅ ZOOM PROTECTION (prevents accidents)
+✅ AUTO-REFRESH (keeps data fresh)
 
 DASHBOARD FEATURES:
 ✅ Live weather data for Split, Croatia
@@ -25,10 +40,9 @@ DASHBOARD FEATURES:
 ✅ 4K monitor optimized
 ✅ Auto-refreshing data
 
-TROUBLESHOOTING:
-- No data showing? Check internet connection
-- Layout issues? Try different browser
-- Data outdated? Press F5 to refresh
+EXIT KIOSK MODE: Press ALT+F4
+REFRESH DATA: Automatic every 5 minutes
+TROUBLESHOOTING: Check internet connection
 
 LOCATION: Split, Croatia (43.5081°N, 16.4402°E)
 TIMEZONE: Europe/Zagreb (CET/CEST)
